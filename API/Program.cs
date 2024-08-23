@@ -15,6 +15,8 @@ builder.Services.AddDbContext<StoreContext>(opt =>
 });
 
 
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,6 +25,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.UseCors(opt=>{
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:5001");
+});
+
 
 //app.UseHttpsRedirection();
 
