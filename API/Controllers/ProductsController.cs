@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using API.Data;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : BaseApiController
     {
         private readonly StoreContext context;
         //private readonly ILogger context;
@@ -21,18 +18,15 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await context.Products.ToListAsync();
-            return Ok(products);
+            return await context.Products.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
         {
             var product = await context.Products.FindAsync(id);
+            if (product == null) return NotFound();
             return Ok(product);
         }
-
-
-
     }
 }
